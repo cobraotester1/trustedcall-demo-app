@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "867317572588",
+    "project_id": "von-app2",
+    "storage_bucket": "von-app2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:867317572588:android:4eff5f3459138dab5756c9",
+        "android_client_info": {
+          "package_name": "com.example.myapp2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDR-zzxtkt5dmXjgLcMxFpzTvUTDkGRAuY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
