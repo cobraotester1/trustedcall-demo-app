@@ -22,9 +22,14 @@ import com.vonage.android_core.PushType
 import com.vonage.jwt.Jwt
 import java.time.ZonedDateTime
 import com.vonage.android_core.VGClientInitConfig
+import com.vonage.android_core.VGSessionImpl
+import com.vonage.android_core.VGSessionListenerAPI
 import com.vonage.clientcore.core.api.LoggingLevel
+import com.vonage.clientcore.core.api.LegStatus
 import com.vonage.clientcore.core.api.ClientConfigRegion
 import com.vonage.clientcore.core.api.CallId
+
+import com.vonage.clientcore.core.api.VoiceClientListener
 //import com.vonage.clientcore.core.api.HangupReason
 import com.vonage.voice.api.*
 
@@ -161,7 +166,7 @@ class  ClientManager(private val context: Context) {
         intent.setAction("incoming_call")
         //intent.putExtra("extra_name", from)
         intent.putExtra("extra_name", "ABC Company")
-        intent.putExtra("extra_uri", Uri.parse("tel:$from"))
+        intent.putExtra("extra_uri", Uri.parse("$from"))
         context.startService(intent)
     }
 
@@ -180,6 +185,7 @@ class  ClientManager(private val context: Context) {
         client.setCallInviteListener { incomingCallId, from, _ ->
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
                 callInvite = incomingCallId
+                VLogUtils.writeLogWithPrefix(this, funcName, "Incoming Call ID is ..." + incomingCallId.toString())
                 startTelecomCallService(from)
             } else {
                 if (telecomManager.isIncomingCallPermitted(phoneAccountHandle)) {
@@ -198,6 +204,15 @@ class  ClientManager(private val context: Context) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
                     VLogUtils.writeLogWithPrefix(this, funcName, "Remote hangup detected")
                     stopTelecomCallService()
+            }
+        }
+        client.setOnLegStatusUpdate  { callId, legId, status ->
+            VLogUtils.writeLogWithPrefix(this, funcName, "Inside setOnLegStatusUpdate")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+                if (status == LegStatus.completed) {
+                    VLogUtils.writeLogWithPrefix(this, funcName, "Call completed")
+                    stopTelecomCallService()
+                }
             }
         }
         client.setCallInviteCancelListener { _, _ ->

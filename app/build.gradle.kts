@@ -4,12 +4,15 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.gms.google-services")
     id("kotlin-parcelize")
+   /* alias(libs.plugins.baselineprofile) */
 }
+
 
 android {
     signingConfigs {
         create("Release1") {
-            storeFile = file("/Users/pagrawal2/.android/upload-keystore.jks")
+            storeFile = file("/Users/pagrawal2/.android/upload-release.jks")
+            //storeFile = file("/Users/pagrawal2/Software/")
             storePassword = "Von@gecobra123"
             keyAlias = "upload"
             keyPassword = "Von@gecobra123"
@@ -51,7 +54,7 @@ android {
     }
     flavorDimensions += listOf()
     dependenciesInfo {
-        includeInApk = rootProject.extra["includeInApk"] as Boolean
+//        includeInApk = rootProject.extra["includeInApk"] as Boolean
         includeInBundle = true
     }
     buildToolsVersion = "34.0.0"
@@ -60,6 +63,7 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    //"baselineProfile"(project(":baselineprofile"))
     releaseImplementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
@@ -103,7 +107,9 @@ dependencies {
     implementation("androidx.compose.runtime:runtime:$compose_runtime_version")
     implementation("androidx.work:work-runtime-ktx:2.10.0")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    //implementation("androidx.profileinstaller:profileinstaller:1.4.1")
+    //implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.1.10")
     implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")

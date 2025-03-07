@@ -16,20 +16,26 @@ import androidx.core.view.forEach
 import android.widget.Toast
 import android.os.Build
 import android.util.Log
+import android.widget.EditText
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import android.widget.LinearLayout
 import com.example.myapp2.utils.VLogUtils
+import com.google.android.material.textfield.TextInputEditText
 
 //import android.annotation.SuppressLint
 
 class MainActivity : AppCompatActivity() {
     private var otherUser: String = ""
+    private var callContextVal: String = ""
 
     private lateinit var clientManager: ClientManager
     private val PERMISSIONS_REQUEST_CODE: Int = 123
+    private lateinit var callContextLayout: LinearLayout
     private lateinit var connectionStatusTextView: TextView
     private lateinit var waitingForIncomingCallTextView: TextView
+    private lateinit var callContextInputText: EditText
+    private lateinit var callContextSubmitButton: Button
     private lateinit var loginAsUserC: Button
     private lateinit var loginAsUserD: Button
     private lateinit var startCallButton: Button
@@ -87,13 +93,17 @@ class MainActivity : AppCompatActivity() {
         VLogUtils.writeLogWithPrefix(this, funcName, "Request Notification Permission")
         requestNotificationPermission()
 
+        callContextLayout = findViewById(R.id.contextLayout)
+        callContextInputText = findViewById(R.id.contextInputTextBox)
         connectionStatusTextView = findViewById(R.id.connectionStatusTextView)
         waitingForIncomingCallTextView = findViewById(R.id.waitingForIncomingCallTextView)
         loginAsUserC = findViewById(R.id.loginAsUserC)
         loginAsUserD = findViewById(R.id.loginAsUserD)
+        callContextSubmitButton = findViewById(R.id.contextSubmitButton)
         startCallButton = findViewById(R.id.startCallButton)
         endCallButton = findViewById(R.id.endCallButton)
 
+        callContextSubmitButton.setOnClickListener { assignCallContext() }
         loginAsUserC.setOnClickListener { loginAsUserC() }
         loginAsUserD.setOnClickListener { loginFirebaseMessaging() }
         startCallButton.setOnClickListener { startCall() }
@@ -122,7 +132,7 @@ class MainActivity : AppCompatActivity() {
                     hideUI()
                     connectionStatusTextView.visibility = View.VISIBLE
                     connectionStatusTextView.text = "Connected"
-                    startCallButton.visibility = View.VISIBLE
+                    startCallButton.visibility = View.GONE
                     waitingForIncomingCallTextView.visibility = View.VISIBLE
 
                     VLogUtils.writeLogWithPrefix(this, funcName, "Request Firebase Token")
@@ -166,10 +176,11 @@ class MainActivity : AppCompatActivity() {
                     runOnUiThread {
                         clientManager.setSession(sessionId)
                         hideUI()
+                        callContextLayout.visibility = View.VISIBLE
                         connectionStatusTextView.visibility = View.VISIBLE
                         connectionStatusTextView.text = "Connected"
                         startCallButton.visibility = View.VISIBLE
-                        waitingForIncomingCallTextView.visibility = View.VISIBLE
+                        waitingForIncomingCallTextView.visibility = View.GONE
                     }
                 }
             }
@@ -195,7 +206,7 @@ class MainActivity : AppCompatActivity() {
                         hideUI()
                         connectionStatusTextView.visibility = View.VISIBLE
                         connectionStatusTextView.text = "Connected"
-                        startCallButton.visibility = View.VISIBLE
+                        startCallButton.visibility = View.GONE
                         waitingForIncomingCallTextView.visibility = View.VISIBLE
                     }
                 }
@@ -203,9 +214,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun assignCallContext() {
+        val userInput: String = callContextInputText.text.toString().trim()
+        if (userInput.isNotEmpty()) {
+            Toast.makeText(this, "Submitted Context: $userInput", Toast.LENGTH_SHORT).show()
+            callContextVal = userInput
+        } else {
+            Toast.makeText(this, "Input is empty", Toast.LENGTH_SHORT).show()
+            callContextVal = ""
+        }
+    }
+
     //@SuppressLint("MissingPermission")
     private fun startCall() {
-        clientManager.getClient().serverCall(mapOf("to" to otherUser)) { err, outboundCall ->
+        clientManager.getClient().serverCall(mapOf("to" to otherUser, "context" to callContextVal)) { err, outboundCall ->
             when {
                 err != null -> {
                     runOnUiThread {
@@ -232,14 +254,24 @@ class MainActivity : AppCompatActivity() {
                     err != null -> {
                         runOnUiThread {
                             connectionStatusTextView.text = err.localizedMessage
+                            callContextLayout.visibility = View.VISIBLE
+                            connectionStatusTextView.visibility = View.VISIBLE
+                            connectionStatusTextView.text = "Connected"
+                            startCallButton.visibility = View.VISIBLE
+                            endCallButton.visibility = View.GONE
+                            waitingForIncomingCallTextView.visibility = View.GONE
                         }
                     }
 
                     else -> {
                         runOnUiThread {
                             hideUI()
+                            callContextLayout.visibility = View.VISIBLE
+                            connectionStatusTextView.visibility = View.VISIBLE
+                            connectionStatusTextView.text = "Connected"
                             startCallButton.visibility = View.VISIBLE
-                            waitingForIncomingCallTextView.visibility = View.VISIBLE
+                            endCallButton.visibility = View.GONE
+                            waitingForIncomingCallTextView.visibility = View.GONE
                         }
                     }
                 }

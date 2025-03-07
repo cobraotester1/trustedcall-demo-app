@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Inapp Call</string>
+    <string name="app_name">ABC Bank App</string>
+    <string name="loginAsUserC">Secure Call Demo</string>
+    <string name="loginAsUserD">Trusted Call Demo</string>
 </resources>

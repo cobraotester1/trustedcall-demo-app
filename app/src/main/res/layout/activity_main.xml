@@ -13,30 +13,34 @@
         android:id="@+id/WelcomeView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="120dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="40dp"
         android:textSize="16dp"
-        android:text="\n\nWelcome to the Connector App\nClick to Login as one of the users"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:text="\n\nMobile Banking App\n\n\nSelect the Consumer Role you want to play"
         android:visibility="visible"
         tools:visibility="visible"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
         <Button
             android:id="@+id/loginAsUserC"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"
-            android:text="Login UserC" />
+            android:text="@string/loginAsUserC" />
 
         <Button
             android:id="@+id/loginAsUserD"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"
-            android:text="Login UserD" />
+            android:text="@string/loginAsUserD" />
     </LinearLayout>
 
     <TextView
@@ -54,12 +58,60 @@
         android:visibility="gone"
         tools:visibility="visible"/>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/contextLayout"
+        android:visibility="gone"
+        android:padding="10dp">
+
+        <!-- Label -->
+        <TextView
+            android:id="@+id/contextlabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Input the Call Context (optional)"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Horizontal LinearLayout for TextBox and Submit Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Text Box -->
+            <EditText
+                android:id="@+id/contextInputTextBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Enter Context here"
+                android:textSize="14sp"
+                android:inputType="text"
+                android:layout_marginTop="10dp"
+                android:maxLength="80"
+                android:singleLine="true"/>
+
+            <!-- Submit Button -->
+            <Button
+                android:id="@+id/contextSubmitButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:text="Submit&#10;Context"/>
+        </LinearLayout>
+    </LinearLayout>
+
     <Button
         android:id="@+id/startCallButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
         android:text="Start call"
+        android:backgroundTint="@color/green"
         android:visibility="gone"
         tools:visibility="visible" />
 

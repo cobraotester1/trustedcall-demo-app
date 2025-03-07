@@ -41,6 +41,7 @@ class FirebaseMessagingService: FirebaseMessagingService() {
         val funcName: String? = object {}.javaClass.enclosingMethod?.name
         VLogUtils.writeLogWithPrefix(this, funcName, "ENTER function")
         // CSDemo: (1) When an incoming push notification comes in, notify the ClientManager
+        VLogUtils.writeLogWithPrefix(this, funcName, "push notification data .... ${remoteMessage.data.toString()}")
         VLogUtils.writeLogWithPrefix(this, funcName, "Start an incoming call")
         ClientManager.getInstance(applicationContext).startIncomingCall(remoteMessage)
         VLogUtils.writeLogWithPrefix(this, funcName, "EXIT function")
