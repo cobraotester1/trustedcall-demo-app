@@ -30,7 +30,6 @@ import com.vonage.clientcore.core.api.ClientConfigRegion
 import com.vonage.clientcore.core.api.CallId
 
 import com.vonage.clientcore.core.api.VoiceClientListener
-//import com.vonage.clientcore.core.api.HangupReason
 import com.vonage.voice.api.*
 
 class  ClientManager(private val context: Context) {
